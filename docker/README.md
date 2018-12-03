@@ -2,13 +2,13 @@
 
 ## Configure server address
 
-In the docker folder, make sure to update the PUBLIC_URL & MONITOR_PUBLIC_URL variables in the `docker-compose.yaml` file to point to the publicly visible URL of the webserver. Anytime these 2 variables are changed, the frontend docker needs to be rebuilt (`docker-compose build frontend`) and restarted (`docker-compose down && docker-compose up -d frontend backend`).
+In the docker folder, make sure to update the MAIN_APP_URL, PUBLIC_URL & MONITOR_PUBLIC_URL variables in the `docker-compose.yaml` file to point to the publicly visible URL of the webserver. Anytime these 2 variables are changed, the frontend docker needs to be rebuilt (`docker-compose -f docker-compose-prod.yaml build frontend landing`) and restarted (`docker-compose -f docker-compose-prod.yaml stop frontend landing && docker-compose -f docker-compose-prod.yaml up -d frontend landing`).
 
-An additional nginx can be installed locally to enable HTTPs communication on top of the http stream. If this is done, the 2 environment variables above need to be updated to use https URLs as well.
+An additional nginx can be installed locally to enable HTTPs communication on top of the http stream. If this is done, the environment variables above need to be updated to use https URLs as well.
 
 ## Composer setup
 
-The docker-composer project contains all the components required to run the demo application: frontend + backend application, blockchain monitoring server + database and an orchestrator container that is reponsible to start the Hyperledger Fabric servers.
+The docker-composer project contains all the components required to run the demo application: frontend + backend application, landing page with general project information, blockchain monitoring server + database and an orchestrator container that is reponsible to start the Hyperledger Fabric servers.
 
 ### Orchestrator
 
@@ -25,24 +25,29 @@ Known issues:
 - the teardownFabric.sh script no longer works because the network in which the inner Fabric composer is running is external. All  Hyperleder Fabric container will be stopped, but not destroyed.
 - composer-cli version is hardcoded in 2 places: backend service Docker file (when installed globally) and backend package.json
 - the redeploy script does not work without manually increasing the package.json version number. This also requires rebuilding the backend, so it's easier to just teardown the whole docker composer project and re-deploy with the updated code
-- [MacOs only] downloadFabric.sh will hang if the images are not already downloaded on the host machine.
+- [MacOs only] downloadFabric.sh may hang if the images are not already downloaded on the host machine.
 
 ## Setup and start project
 
 The following script has to be ran every time the backend/chaincode code is changed. It will take care of rebuilding the hyperledger composer backend, start the Fabric network, install the composer application and initialize the sample data.
 
-1. Build all docker containers. Run the following command in the `docker` folder:
+Deployment is automated via a series of docker-compose containers. Run the following command in the `docker` folder, depending on your operating system:
 
+* Linux
 ```bash
-docker-compose build
+sudo ./composer-setup.sh production
+```
+(sudo is required to allow deletion of the existing composer volume data)
+
+
+* MacOs
+```bash
+./composer-setup.sh production
 ```
 
-2. Initialize & Deploy everything
-
-Deployment is automated via a docker-compose container. Run the following command in the `docker` folder as a superuser (required on Linux to delete the existing docker-compose volumes):
-
-```bash
-sudo ./composer-setup.sh
+* Windows
+```shell
+composer-setup.bat production
 ```
 
 Once the script is finished, the application will be left running and ready to be used.
@@ -55,19 +60,20 @@ If the frontend is the only updated application, there's no need to restart the 
 1. Rebuild the new frontend container
 
 ```bash
-docker-compose build --no-cache frontend
+docker-compose -f docker-composer-prod.yaml build --no-cache frontend
 ```
 
-2. Stop the current frontend container
+2. Stop and remove the current frontend container
 
 ```bash
-docker-compose stop frontend
+docker-compose -f docker-composer-prod.yaml stop frontend
+docker-compose -f docker-composer-prod.yaml rm frontend
 ```
 
 3. Start the new container
 
 ```bash
-docker-compose up -d
+docker-compose -f docker-composer-prod.yaml up -d
 ```
 
 ## HTTPS connections
@@ -78,8 +84,8 @@ An Nginx proxy should be installed on the local machine to wrap the http port ex
 
 The main VM NginX Docker setup exposes the following services:
 
-* main admin website = `<root URL>:8080`
+* landing page = `<root URL>:80`
+* main website = `<root URL>:8080`
 * api = `<root URL>:8080/api/`
 * Api explorer = `<root URL>:8080/explorer/` (including trailing slash!)
-* Hyperledger monitor = `<root URL>:8090`
-* Mobile app = `https://<root URL>`
+* Hyperledger monitor = `<root URL>:8081`
