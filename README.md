@@ -1,6 +1,6 @@
 # composer-startup-poc
 
-This template is meant as a quick-start for Hyperldger composer projects. It contains a basic backend (`server`) built on top of the standard `composer-rest-server` npm package with additional scripts to build & deploy the composer network, a quickstart front-end application (`client`) with basic user management & transaction monitoring.
+This template is meant as a quick-start for Hyperldger composer projects. It contains a basic backend (`server` folder) built on top of the standard `composer-rest-server` npm package with additional scripts to build & deploy the composer network, a quickstart front-end application (`client`) with basic user management & transaction monitoring.
 
 The projects containts a fully self-contained Docker-compose deployment environment that can be used for production servers. For setting up a development environment, see the section below in this document.
 
@@ -37,9 +37,22 @@ When customizing the frontend application, you can start from the following list
 
 ## Setup development environment
 
-The development environment is based on the production environment. All prerequisites are bundled in the Docker composer project from the `docker` folder. The backend will still run inside the docker container, as the composer-cli framework doesn't offer any means of JS debugging when ran on the local machine anyway. The frontend application can be started outside of the docker composer project and debugged locally.
+### Prerequisites
 
-1. Start the production docker-compose by following the instructions in the `docker` folder to start a complete Hyperledger fabric network, build the composer .bna file and deploy it onto the network
+In order to use the local development environment, the following tools are required:
+* Docker CE (tested with 18.09 on MacOs, Linux and Windows)
+* Docker-compose (tested with 1.23)
+* NodeJS runtime
+* NodeJS prerequisites (Xcode for MacOs, build-essentials for Linux)
+* Angular CLI (`npm install -g @angular/cli@~1.7.0`)
+
+### Setup instructions
+
+The development environment is based on the production environment configuration. All prerequisites for running Hyperledger are bundled in the Docker composer project from the `docker` folder. The backend will still run inside the docker container, as the composer-cli framework doesn't offer any means of JS debugging when ran on the local machine anyway. 
+
+The frontend application can be started outside of the docker composer project and debugged locally.
+
+1. Start the production docker-compose by following the instructions in the `docker` folder to start a complete Hyperledger fabric network, build the composer .bna file and deploy it onto the network. Don't pass the 'production' parameter to the composer-setup.sh or .bat file.
 
 2. Install the frontend application dependencies.
 
@@ -47,6 +60,7 @@ The development environment is based on the production environment. All prerequi
 cd frontend
 npm install
 ```
+
 3. Start the frontend application development server. By default it will connect to http://localhost:3000 for the backend service, which is bound to the docker container 'hyper-backend'.
 
 ```
