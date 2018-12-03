@@ -1,0 +1,167 @@
+<app-banner></app-banner>
+
+<div class="container">
+    <!-- Page title jumbotron -->
+    <div class="jumbotron">
+        <h1>
+          <i class="fa fa-balance-scale"></i>
+          <span *ngIf="user?.role!='Recycling'">Car tires</span>
+          <span *ngIf="user?.role=='Recycling'">Recycling tires</span>
+        </h1> 
+        <p *ngIf="user?.role!='Recycling'">Manage the tires owned</p>
+        <p *ngIf="user?.role=='Recycling'">Tires recycled in this location</p>
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createTireModal" *ngIf="user?.role == 'Manufacturer'">
+            <i class="fa fa-plus" style="color: #ffffff;"></i> Create new tires
+        </button>
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#recycleTiresModal" *ngIf="user?.role == 'Recycling'">
+            <i class="fa fa-plus" style="color: #ffffff;"></i> Recycle car tires
+        </button>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+    
+            <!-- Transaction alerts -->
+            <div class="alert alert-dismissible" [class.alert-success]="notificationSuccessfull" [class.alert-danger]="!notificationSuccessfull" id="alert-success-trade" role="alert" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <a class="alert-link">{{notificationMessage}}</a>
+            </div>
+
+            <!-- Spinner -->
+            <div class="" style="text-align:center;">
+                <div class="mdl-spin" id="spinner-trade">
+                    <svg class="spinner" width="35px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+                    </svg>
+                </div>  
+            </div>
+
+            <!-- Table -->
+            <table class="table">
+                <tr>
+                    <th><b>Tire ID</b></th>
+                    <th><b>Created on</b></th>
+                    <th *ngIf="user?.role=='Distributor' || user?.role=='Retailer'"><b>Sold on</b></th>
+                    <th *ngIf="user?.role=='Recycling'"><b>Recycled on</b></th>
+                    <th><b>Actions</b></th>
+                </tr>
+                <tr *ngFor="let tire of tires; let i = index;">
+                    <td>{{tire.tireId}}</td>
+                    <td>{{tire.creationDate | date:'short'}}</td>
+                    <td *ngIf="user?.role=='Distributor' || user?.role=='Retailer'">{{tire.sellDate | date:'short'}}</td>
+                    <td *ngIf="user?.role=='Recycling'">{{tire.recycleDate | date:'short'}}</td>
+                    <td>
+                      <button class="btn btn-primary row-button" data-toggle="modal" data-target="#sellTireModal" 
+                        (click)="onRowAction(tire)" *ngIf="user?.role=='Manufacturer' || user?.role=='Distributor'">
+                        Sell
+                      </button>
+                      <button class="btn btn-primary row-button" data-toggle="modal" data-target="#sellToCustomerModal" 
+                        (click)="onRowAction(tire)" *ngIf="user?.role=='Retailer'">
+                        Sell to customer
+                      </button>
+                    </td>
+                </tr>
+            </table>
+    
+            
+            <div class="modal fade" id="createTireModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add tires</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="assetId">How many tires to create?</label>
+                                    <input id="assetId" type="number" class="form-control" #tireCount required>
+                                </div>
+                            </form>     
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button (click) = "createTires(tireCount.value)" type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end create tire -->
+
+            <div class="modal fade" id="recycleTiresModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Recycle tires on car</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="vinNoRecycle">Vehicle VIN number</label>
+                                    <input id="vinNoRecycle" type="text" class="form-control" #vinNoRec required>
+                                </div>
+                            </form>     
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button (click) = "recycle(vinNoRec.value)" type="button" class="btn btn-primary" data-dismiss="modal">Recycle</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end recycle -->
+            
+            <div class="modal fade" id="sellTireModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Sell tire <b>{{selectedTire?.tireId}} to customer</b></h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="form-group">
+                              <label for="newOwner">Customer car VIN number</label>
+                              <select class="form-control" id="newOwner" #newOwner required>
+                                  <option *ngFor="let customer of customers; let i = index;">                                        
+                                        {{customer.customerId}}
+                                  </option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button (click) = "sell(selectedTire?.tireId, newOwner.value)" type="button" class="btn btn-primary" data-dismiss="modal">Sell</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- end sell to customer -->
+
+            <div class="modal fade" id="sellToCustomerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Sell tire <b>{{selectedTire?.tireId}}</b></h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="form-group">
+                              <label for="vinNo">Customer car's VIN number</label>
+                              <input id="vinNo" type="text" class="form-control" #vinNumber required>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button (click) = "sellToCustomer(selectedTire?.tireId, vinNumber.value)" type="button" class="btn btn-primary" data-dismiss="modal">Sell</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- end sell to customer -->
+
+        </div>
+    </div>
+
+</div>

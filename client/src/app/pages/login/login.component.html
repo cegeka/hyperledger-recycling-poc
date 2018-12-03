@@ -1,0 +1,46 @@
+<div class="banner">
+    <h1 class="banner-head">
+        Hyperledger Composer Angular Quickstart Template
+        <div class="row" style="margin-top: 30px;">
+            <div class="col-md-4">
+                <a href="https://hyperledger.github.io/composer/latest/" target="_blank"><img src="assets/hyperledger-composer.png" width="100px" height="100px"></a>
+            </div>
+            <div class="col-md-4">
+                <p style="font-size:70px;">+</p>
+            </div>
+            <div class="col-md-4">
+                <a href="https://angular.io/" target="_blank"><img src="assets/angular.png" width="100px" height="100px"></a>
+            </div>
+        </div>
+    </h1>
+</div>
+    
+<div class="row">
+    <div class="panel panel-default loginform" style="padding: 25px;">
+        <div class="" style="text-align: center;">
+            <img src="assets/logo-placeholder.jpg" width="150px" height="75px" style="margin-bottom: 15px;">
+            <div class="" style="text-align: center;">
+                <form class="">
+                    <div class="form-group"> 
+                        <label for="usernameinput">Username...</label>
+                        <input type="text" class="form-control" id="username" #username>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordinput">Password...</label>
+                        <input type="password" class="form-control" id="password" #password>
+                        </div>
+                </form>     
+                <br> 
+                <mat-error *ngIf="error">{{error}}</mat-error>          
+                <div>
+                    <button class="btn btn-primary btn-block" (click) = "login(username.value, password.value)" data-dismiss="modal">Login</button>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+    
+    

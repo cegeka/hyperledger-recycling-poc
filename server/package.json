@@ -1,0 +1,32 @@
+{
+  "name": "hyperpoc",
+  "version": "0.0.1",
+  "description": "Hyperledger POC quickstart template",
+  "scripts": {
+    "build-bna": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/poc.bna",
+    "runtime-install": "composer network install --card PeerAdmin@hlfv1 --archiveFile ./dist/poc.bna",
+    "deploy": "composer network start --networkName $npm_package_name --networkVersion $npm_package_version --card PeerAdmin@hlfv1 --networkAdmin admin --networkAdminEnrollSecret adminpw --file networkadmin.card",
+    "test-deploy": "composer network start --networkName $npm_package_name --networkVersion $npm_package_version.js --card PeerAdmin@hlfv1 --networkAdmin admin --networkAdminEnrollSecret adminpw --file networkadmin.card",
+    "setup": "npm install --prefix setup && npm start --prefix setup",
+    "admin-card": "composer card import --file networkadmin.card",
+    "ping": "composer network ping --card admin@$npm_package_name",
+    "rebuild": "composer archive create --sourceType dir --sourceName . -a ./dist/poc.bna",
+    "redeploy": "composer network upgrade --networkName $npm_package_name --networkVersion $npm_package_version -c admin@$npm_package_name",
+    "start": "composer-rest-server -c admin@$npm_package_name -n required -w true",
+    "test": "mocha --recursive"
+  },
+  "author": "Cristian Sandu",
+  "email": "cristian.sandu@cegeka.com",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "composer-admin": "0.19.4",
+    "composer-client": "0.19.4",
+    "composer-common": "0.19.4",
+    "composer-connector-embedded": "0.19.4",
+    "chai": "latest",
+    "eslint": "latest",
+    "istanbul": "latest",
+    "mkdirp": "latest",
+    "mocha": "latest"
+  }
+}

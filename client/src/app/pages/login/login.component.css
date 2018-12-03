@@ -1,0 +1,39 @@
+/*
+ * Login form styles
+*/
+
+.loginform {
+    border-radius: 5px;
+    width: 40%;
+    margin: 0px auto;
+    float: none;
+  }
+
+@media only screen and (min-width: 1000px) {
+
+    .loginform {
+        border-radius: 5px;
+        width: 30%;
+        margin: 0px auto;
+        float: none;
+    }
+
+    .banner-head {
+        padding-top: 10px; 
+    }
+  }
+
+@media only screen and (max-width: 600px) {
+
+    .loginform {
+        border-radius: 5px;
+        width: 80%;
+        margin: 0px auto;
+        float: none;
+    }
+
+    .banner-head {
+        padding-top: 10px; 
+    }
+
+  }

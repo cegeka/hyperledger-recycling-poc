@@ -1,0 +1,56 @@
+<app-banner></app-banner>
+
+<div class="container">
+    <div class="jumbotron">
+        <h1><i class="fa fa-tachometer-alt"></i> Dashboard</h1> 
+        <p>Welcome {{ this.userService.loggedInUser.firstName }} {{ this.userService.loggedInUser.lastName }}!</p> 
+    </div>
+ 
+    <div class="row">
+        <div class="col-md-6 col-sm-12 action-tile" *ngIf="user?.role=='Manufacturer'">
+          <div class="card">
+            <i class="fa fa-balance-scale fa-5x"></i>
+            <div class="card-body">
+              <h5 class="card-title">Tire manufacturing</h5>
+              <p class="card-text">Create/import and sell tires.</p>
+              <a [routerLink]="['/tires']" class="btn btn-primary">Tires</a>
+              <br><br>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 action-tile" *ngIf="user?.role=='Retailer' || user?.role=='Distributor'">
+          <div class="card">
+            <i class="fa fa-balance-scale fa-5x"></i>
+            <div class="card-body">
+              <h5 class="card-title">Tire management</h5>
+              <p class="card-text">View stock and sell tires.</p>
+              <a [routerLink]="['/tires']" class="btn btn-primary">Sell Tires</a>
+              <br><br>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 action-tile" *ngIf="user?.role=='Recycling'">
+          <div class="card">
+            <i class="fa fa-balance-scale fa-5x"></i>
+            <div class="card-body">
+              <h5 class="card-title">Recycled Tires</h5>
+              <p class="card-text">View recycled tires and recycle new ones.</p>
+              <a [routerLink]="['/tires']" class="btn btn-primary">Recycling</a>
+              <br><br>
+            </div>
+          </div>
+        </div>  
+        <div class="col-md-6 col-sm-12 action-tile">
+          <div class="card">
+            <i class="fa fa-user fa-5x"></i>
+            <div class="card-body">
+              <h5 class="card-title">Manage identity</h5>
+              <p class="card-text">Manage your account information.</p>
+              <a routerLink="/my-account" class="btn btn-primary">My account</a>
+              <br><br>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+</div>

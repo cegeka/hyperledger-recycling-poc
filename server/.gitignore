@@ -1,0 +1,6 @@
+composer-logs
+node_modules
+dist
+*.card
+.vscode
+.DS_Store

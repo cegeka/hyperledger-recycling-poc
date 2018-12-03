@@ -1,0 +1,87 @@
+/**
+ * Hyperledger Composer business network definition: Model file
+ */
+
+namespace com.cegeka
+
+// 1. Participants
+participant Customer identified by customerId {
+  o String customerId
+  o String password optional
+  o String firstName
+  o String lastName
+  o ParticipantRole role default = 'Undefined'
+}
+
+participant Vehicle identified by vinNumber {
+  o String vinNumber
+  o Integer tiresOwned
+}
+
+participant Admin identified by userId {
+  o String userId
+  o String password optional
+  o String name default = "admin"
+}
+
+// 2. Assets
+
+asset CarTire identified by tireId {
+  o String tireId
+  o AssetStatus status
+  o DateTime creationDate
+  --> Participant owner optional
+  --> Vehicle vehicle optional
+  o DateTime sellDate optional
+  o DateTime recycleDate optional
+}
+
+// 3. Enums
+enum ParticipantRole {
+  o Undefined
+  o Manufacturer
+  o Distributor
+  o Retailer
+  o Recycling
+}
+
+enum AssetStatus {
+  o Created
+  o Sold
+  o BeingUsed
+  o Recycled
+}
+
+// 4. Concepts
+
+// 5. Transactions
+
+transaction ImportTires {
+  --> Customer importer
+  o Integer tireCount
+}
+
+transaction Sell {
+  --> CarTire tire
+  --> Customer seller
+  --> Customer newOwner
+}
+
+transaction SellToEndCustomer {
+  --> CarTire tire
+  --> Customer seller
+  //Not a Vehicle object since we might ne creating it with this transaction
+  o String vinNumber
+}
+
+transaction Recycle {
+  --> Vehicle vehicle
+  --> Customer recycling
+}
+
+// 6. Events
+
+event ObtainRecyclingFee {
+  --> CarTire tire
+  --> Customer recycling
+}

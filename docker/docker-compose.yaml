@@ -1,0 +1,90 @@
+version: '3.5'
+
+services:
+  frontend:
+    build:
+      context: ../client
+      args:
+        - FRONTEND_ENV=--env=prod
+        # variables in environment.prod.ts that point to the public-facing APIs where the website & monitor website will be hosted
+        - PUBLIC_URL=http://localhost:8080
+        - MONITOR_PUBLIC_URL=http://localhost:8081
+    links:
+      - backend
+    ports:
+      # main frontend port = 80
+      - 8080:80
+    environment:
+      # Used by the nginx forward rules for the /api paths
+      SERVER_HOST: backend
+      SERVER_PORT: 3000
+    container_name: hyper-frontend
+
+  backend:
+    build:
+      context:  ../server
+    links:
+      - orchestrator
+    ports:
+      # debugging purpose only
+      - 3000:3000
+    environment:
+      HL_FABRIC_VERSION: hlfv11
+      HL_FABRIC_TAG: 1.1.0
+      NODE_ENV: production
+      PORT: 3000
+    container_name: hyper-backend
+    volumes:
+      - .data/composer:/root/.composer
+
+  explorer-db:
+    image: mysql:5.5.59
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: fabricexplorer
+    container_name: hyper-db-explorer
+    volumes:
+      - .data/mysql:/var/lib/mysql
+
+#  explorer:
+#    build:
+#      context: ./explorer
+#    environment:
+#      DB_USER: root      
+#      DB_PASSWORD: example
+#      DB_HOST: explorer-db
+#    depends_on:
+#      - explorer-db
+#    links: 
+#      - explorer-db
+#      - orchestrator
+#    ports:
+#      # Debug purpose only
+#      - 8081:8080
+#    container_name: hyper-explorer
+#    restart: always
+
+  orchestrator:
+    build:
+      context: ./fabric-orchestrator
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - HL_FABRIC_VERSION=hlfv11
+      - HL_FABRIC_TAG=1.1.0
+      - COMPOSE_CONVERT_WINDOWS_PATHS=${COMPOSE_CONVERT_WINDOWS_PATHS}
+      - COMPOSE_FORCE_WINDOWS_HOST=${COMPOSE_FORCE_WINDOWS_HOST}
+      # Make sure the name passed here is identical to the network name set below
+      - EXTERNAL_NETWORK_NAME=hyper-quickstart-poc
+      - HL_FILES_ROOT_PATH=${PWD}/fabric-orchestrator/fabric-tools/fabric-scripts/hlfv11/composer/
+      #- HL_FABRIC_DEVMODE=true
+      # Apparently the Fabric container for the chaincode is not rebuilt unless the 
+      # npm version number is incremented. Setting this to true will delete all the 
+      # old images and container and will force a re-creation of the chaincode
+      - FORCE_REBUILD_CHAINCODE_CONTAINER=true
+    container_name: fabric-orchestrator
+
+networks:
+  default:
+    name: hyper-quickstart-poc

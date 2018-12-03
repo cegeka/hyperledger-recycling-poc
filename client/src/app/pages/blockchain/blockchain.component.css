@@ -1,0 +1,14 @@
+td, th{
+    width:25%;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+cdk-visually-hidden ng-tns-c3-0 ng-star-inserted{
+    display:none;
+}
+
+.customWidthClass{
+    flex: 0 0 50px;
+    margin-right:5px;
+ }

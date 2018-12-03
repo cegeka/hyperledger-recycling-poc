@@ -1,0 +1,7 @@
+.action-tile .card {
+  width: 36rem;
+}
+
+.action-tile .card i {
+  width: 50px; height: 120px; color: #333333
+}

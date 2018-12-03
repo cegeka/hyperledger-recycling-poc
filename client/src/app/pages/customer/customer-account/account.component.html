@@ -1,0 +1,84 @@
+<app-banner></app-banner>
+
+<div class="container">
+    <!-- Page title jumbotron -->
+    <div class="jumbotron">
+        <h1><i class="fa fa-user"></i> {{ this.userService.loggedInUserName }}</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <!-- Transaction alerts -->
+            <div class="alert alert-success alert-dismissible" id="alert-success1" role="alert" style="display:none;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>       
+                    <a href="#" class="alert-link">You successfully updated your account.</a>
+            </div>
+            
+            <div class="" style="text-align:center;">
+                <!-- Spinner -->
+                <div class="mdl-spin" id="spinner1">
+                    <svg class="spinner" width="35px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+                    </svg>
+                </div>  
+            </div>
+
+            <!-- Account information -->
+            <form>
+                <div class="form-group">
+                    <label for="accountUsername">Username</label>
+                    <input disabled type="text" class="form-control" id="accountUsername" aria-describedby="emailHelp" value="{{ this.userService.loggedInUserName }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="accountFirstName">First name</label>
+                    <input disabled type="text" class="form-control" id="accountFirstName" aria-describedby="emailHelp" value="{{ this.userService.loggedInUser.firstName }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="accountLastName">Last name</label>
+                    <input disabled type="text" class="form-control" id="accountLastName" aria-describedby="emailHelp" value="{{ this.userService.loggedInUser.lastName }}">
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-primary btn-lg" (click)="copyUserData()" data-toggle="modal" data-target="#updateAccountModal">
+                    <i class="fa fa-cog" style="color: #ffffff;"></i> Settings
+            </button> 
+        </div>
+    </div>
+
+    <div class="modal fade" id="updateAccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" (click)="close()" >&times;</button>
+                <h4 class="modal-title">Update user</h4>
+              </div>
+              <div class="modal-body">
+                      <form>
+                          <div class="form-group">
+                              <label for="customerId">Username</label>
+                              <input id="id1" type="text" class="form-control" value="{{userCopy.customerId}}" readonly>
+                          </div>
+                          <div class="form-group">
+                              <label for="firstName">First Name</label>
+                              <input id="firstName" type="text" class="form-control" [(value)]="userCopy.firstName" required>
+                          </div>
+                          <div class="form-group">
+                              <label for="lastName">Last Name</label>
+                              <input id="lastName" type="text" class="form-control" [(value)]="userCopy.lastName" required>
+                          </div>  
+                      </form>     
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button (click) = "updateAccount(userCopy.loggedInUserName, userCopy.firstName, userCopy.lastName)" type="button" class="btn btn-primary" data-dismiss="modal" >Update</button>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+</div>
