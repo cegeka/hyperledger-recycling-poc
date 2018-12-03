@@ -54,6 +54,7 @@ function createCustomer(customerId, password, firstName, lastName, role) {
 /**
  * Execute functions
  */
+createAdmin();
 createCustomer('manufacturer1', '', 'Manufacturer', 'Co. 1', 'Manufacturer');
 createCustomer('manufacturer2', '', 'Manufacturer', 'Co. 2', 'Manufacturer');
 createCustomer('distributorA', '', 'Distributor', 'Co. A', 'Distributor');

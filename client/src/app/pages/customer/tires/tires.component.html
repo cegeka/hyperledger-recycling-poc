@@ -24,12 +24,14 @@
     
             <!-- Transaction alerts -->
             <div class="alert alert-dismissible" [class.alert-success]="notificationSuccessfull" [class.alert-danger]="!notificationSuccessfull" id="alert-success-trade" role="alert" style="display:none;">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
                 <a class="alert-link">{{notificationMessage}}</a>
             </div>
 
             <!-- Spinner -->
-            <div class="" style="text-align:center;">
+            <div style="text-align:center;">
                 <div class="mdl-spin" id="spinner-trade">
                     <svg class="spinner" width="35px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
                         <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
@@ -65,12 +67,14 @@
             </table>
     
             
-            <div class="modal fade" id="createTireModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="createTireModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Add tires</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
                             <form>
@@ -89,12 +93,14 @@
             </div>
             <!-- end create tire -->
 
-            <div class="modal fade" id="recycleTiresModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="recycleTiresModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Recycle tires on car</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
                             <form>
@@ -113,12 +119,14 @@
             </div>
             <!-- end recycle -->
             
-            <div class="modal fade" id="sellTireModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="sellTireModal" tabindex="-1" role="dialog" aria-hidden="true">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
                           <h5 class="modal-title" id="exampleModalLabel">Sell tire <b>{{selectedTire?.tireId}} to customer</b></h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
                       </div>
                       <div class="modal-body">
                           <div class="form-group">
@@ -132,19 +140,21 @@
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button (click) = "sell(selectedTire?.tireId, newOwner.value)" type="button" class="btn btn-primary" data-dismiss="modal">Sell</button>
+                          <button (click)="sell(selectedTire?.tireId, newOwner.value)" type="button" class="btn btn-primary" data-dismiss="modal">Sell</button>
                       </div>
                   </div>
               </div>
           </div>
           <!-- end sell to customer -->
 
-            <div class="modal fade" id="sellToCustomerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="sellToCustomerModal" tabindex="-1" role="dialog" aria-hidden="true">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
                           <h5 class="modal-title" id="exampleModalLabel">Sell tire <b>{{selectedTire?.tireId}}</b></h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
                       </div>
                       <div class="modal-body">
                           <div class="form-group">
@@ -154,7 +164,7 @@
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button (click) = "sellToCustomer(selectedTire?.tireId, vinNumber.value)" type="button" class="btn btn-primary" data-dismiss="modal">Sell</button>
+                          <button (click)="sellToCustomer(selectedTire?.tireId, vinNumber.value)" type="button" class="btn btn-primary" data-dismiss="modal">Sell</button>
                       </div>
                   </div>
               </div>

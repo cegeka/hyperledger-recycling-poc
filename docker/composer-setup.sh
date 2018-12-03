@@ -25,7 +25,7 @@ rm -rf explorer/crypto-config
 cp -r ./fabric-orchestrator/fabric-tools/fabric-scripts/hlfv11/composer/crypto-config explorer/crypto-config
 
 # only after the above files are copied can we build the containers!
-docker-compose $COMPOSER_FILE build backend frontend
+docker-compose $COMPOSER_FILE build
 
 # create the backend container and run the deploy script only!
 docker-compose $COMPOSER_FILE up -d orchestrator
@@ -39,9 +39,9 @@ docker-compose $COMPOSER_FILE run backend ./deploy.sh
 ./add-data.sh "$COMPOSER_FILE"
 
 # initialize the explorer database
-#docker-compose $COMPOSER_FILE up -d explorer-db
-#docker-compose $COMPOSER_FILE up --no-start explorer
-#docker-compose $COMPOSER_FILE run explorer ./initDb.sh
+docker-compose $COMPOSER_FILE up -d explorer-db
+docker-compose $COMPOSER_FILE up --no-start explorer
+docker-compose $COMPOSER_FILE run explorer ./initDb.sh
 
 # Start everything
 docker-compose $COMPOSER_FILE up -d

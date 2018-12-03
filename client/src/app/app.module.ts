@@ -4,9 +4,6 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from "@angular/router";
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatInputModule, MatSelectModule, MatTableModule, MatSortModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule } from '@angular/material';
-import { MatGridListModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 
 import { AppComponent } from './app.component';
@@ -26,10 +23,7 @@ import { UserService } from './services/user.service';
 import { TireService } from './services/tire.service';
 import { HistoryService } from './services/history.service';
 
-import { SpinnerComponent } from './components/spinner/spinner.component';
 import { BannerComponent } from './components/banner/banner.component';
-import { UpdateCustomerComponent } from './components/modal/update-customer.component';
-import { DeleteCustomerComponent } from './components/modal/delete-customer.component';
 
 
 @NgModule({
@@ -42,10 +36,7 @@ import { DeleteCustomerComponent } from './components/modal/delete-customer.comp
     AccountComponent,
     BlockchainComponent,
     TxDetailComponent,
-    SpinnerComponent,
     BannerComponent,
-    UpdateCustomerComponent,
-    DeleteCustomerComponent,
     FilterPipe,
   ],
   imports: [
@@ -54,22 +45,7 @@ import { DeleteCustomerComponent } from './components/modal/delete-customer.comp
     RouterModule.forRoot(routes),
     HttpModule,
     FormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatTableModule,
-    MatSortModule,
-    MatGridListModule,
-    BrowserAnimationsModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatDialogModule,
     BootstrapModalModule,
-  ],
-  //Don't forget to add the component to entryComponents section
-  entryComponents: [
-    UpdateCustomerComponent,
-    DeleteCustomerComponent,
   ],
   providers: [UserService, HistoryService, TireService],
   exports: [

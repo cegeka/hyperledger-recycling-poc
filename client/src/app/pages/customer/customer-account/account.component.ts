@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService, UserRole } from '../../../services/user.service';
+import { UserService } from '../../../services/user.service';
 
 import { DialogService } from "ng2-bootstrap-modal";
 
@@ -31,18 +31,21 @@ export class AccountComponent implements OnInit {
     this.userCopy = {
       customerId: user.customerId,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
+      password: user.password,
+      role: user.role,
     };
   }
   
-  updateAccount(id: string, firstName: string, lastName: string) {
-    var spinner = document.getElementById("spinner1");
+  updateAccount(id: string, firstName: string, lastName: string, password: string, role: string) {
+    var spinner = document.getElementById("spinner");
     spinner.style.display = "block"; 
-    this.userService.updateAccount(id, firstName, lastName).subscribe(() => {
-      //TODO: refresh current user settings
+    this.userService.updateCustomer(id, firstName, lastName, password, role).subscribe((res) => {
+      this.userService.loggedInUser = res;
+
       setTimeout( () => { 
         spinner.style.display = "none";
-        document.getElementById('alert-success1').style.display = 'block';
+        document.getElementById('alert-success').style.display = 'block';
       }, 2000 );
       setTimeout( () => { 
         document.getElementById('alert-success').style.display = 'none';

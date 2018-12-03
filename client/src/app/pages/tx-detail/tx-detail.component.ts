@@ -11,19 +11,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./tx-detail.component.css']
 })
 export class TxDetailComponent implements OnInit {
-  tx: any
   json: Array<any>;
   id: string;
-  private sub: any;
   TransactionTypeKey = "transactionType";
 
   constructor(private historyService: HistoryService, private userService: UserService, private route: ActivatedRoute, private router: Router, private location: Location) {
   }
 
   goBack() {
-    // window.history.back();
     this.location.back();
-    console.log( 'goBack()...' );
   }
 
   ngOnInit() {
@@ -31,14 +27,13 @@ export class TxDetailComponent implements OnInit {
       this.router.navigate(['/login']);
     }
     
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.id = params['id'];
     });
     this.json = [];
     this.historyService.getTx(this.id).subscribe((response) => {
-      this.tx = response;
-      for (let key in this.tx) {
-        this.json.push({ key: key, value: this.tx[key] });
+      for (let key in response) {
+        this.json.push({ key: key, value: response[key] });
       }
       this.addSpecificTx();
     });
@@ -48,16 +43,48 @@ export class TxDetailComponent implements OnInit {
   addSpecificTx() {
     for (let jsonItem of this.json) {
       if (jsonItem.key == this.TransactionTypeKey) {
-        if(jsonItem.value.indexOf('Trade') != -1) {
-          jsonItem.value = 'Asset transferred';
-          this.addAssetTransferred();
+        if(jsonItem.value.indexOf('ImportTires') != -1) {
+          jsonItem.value = 'Import tires';
+          this.addTiresImported();
+        } else if(jsonItem.value.indexOf('SellToEndCustomer') != -1) {
+          jsonItem.value = 'Sell tire to customer';
+          this.addSellTireToCustomer();        
+        } else if(jsonItem.value.indexOf('Sell') != -1) {
+          jsonItem.value = 'Sell tire';
+          this.addSellTire();
+        } else if(jsonItem.value.indexOf('Recycle') != -1) {
+          jsonItem.value = 'Recycle tires on car';
+          this.addRecycleTiress();
         }
+      } else if (jsonItem.key == 'eventsEmitted' && jsonItem.value.length > 0) {
+          this.addEvents(jsonItem.value);
       }
     }
   }
 
-  addAssetTransferred() {
-    this.historyService.getAssetTransferredTx(this.id).subscribe(this.addAllFields.bind(this));
+  addEvents(eventsArray: any[]) {
+    let flatEvents = {
+      RecycledTiresList: eventsArray.filter(t => t['$class'] && t['$class'].indexOf('ObtainRecyclingFee') != -1)
+        .map(event => event.tire)
+    };
+
+    this.addAllFields(flatEvents);
+  }
+
+  addTiresImported() {
+    this.historyService.getImportTiresTx(this.id).subscribe(this.addAllFields.bind(this));
+  }
+
+  addSellTireToCustomer() {
+    this.historyService.getSellToEndCustomerTx(this.id).subscribe(this.addAllFields.bind(this));
+  }
+
+  addSellTire() {
+    this.historyService.getSellTx(this.id).subscribe(this.addAllFields.bind(this));
+  }
+
+  addRecycleTiress() {
+    this.historyService.getRecycleTx(this.id).subscribe(this.addAllFields.bind(this));
   }
 
   private addAllFields(response) {

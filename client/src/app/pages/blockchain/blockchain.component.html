@@ -8,42 +8,22 @@
   </div>
 
   <!-- Table -->
-  <mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"  matSortActive="transactionTimestamp" matSortDirection="desc" >
-    <!-- <ng-container matColumnDef="participantInvoking">
-      <mat-header-cell *matHeaderCellDef>Participant </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <ng-container *ngIf="element.participantInvoking">
-          {{element.participantInvoking.substring(element.participantInvoking.lastIndexOf('.')+1)}}
-        </ng-container>
-      </mat-cell>
-    </ng-container> -->
-
-    <ng-container matColumnDef="transactionType">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Transaction Type </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.transactionType.substring(element.transactionType.lastIndexOf('.')+1)}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="transactionTimestamp">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Transaction Timestamp </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.transactionTimestamp | date:'dd MMM yyyy, HH:mm:ss'}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="transactionId">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Transaction ID </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.transactionId}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="details">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" mat-sort-header>Details </mat-header-cell>
-      <mat-cell *matCellDef="let element" [ngClass]="'customWidthClass'">
-        <a [routerLink]="['/detail/' , element.transactionId ]">
-          <mat-icon class="highlight">keyboard_arrow_right</mat-icon>
-        </a>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-
+  <table class="table" *ngIf="blockchainRecords && blockchainRecords.length > 0">
+      <tr>
+          <th>Transaction type</th>
+          <th>Timestamp</th>
+          <th>Transaction ID</th>
+          <th>Details</th>
+      </tr>
+      <tr *ngFor="let record of blockchainRecords">
+        <td>{{record.transactionType.substring(record.transactionType.lastIndexOf('.')+1)}}</td>
+        <td>{{record.transactionTimestamp | date:'dd MMM yyyy, HH:mm:ss'}}</td>
+        <td>{{record.transactionId}}</td>
+        <td>
+          <a [routerLink]="['/detail/' , record.transactionId ]" class="pull-right">
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </td>
+    </tr>
+  </table>
 </div>

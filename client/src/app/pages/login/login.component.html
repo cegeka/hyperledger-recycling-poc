@@ -17,10 +17,10 @@
     
 <div class="row">
     <div class="panel panel-default loginform" style="padding: 25px;">
-        <div class="" style="text-align: center;">
+        <div style="text-align: center;">
             <img src="assets/logo-placeholder.jpg" width="150px" height="75px" style="margin-bottom: 15px;">
-            <div class="" style="text-align: center;">
-                <form class="">
+            <div style="text-align: center;">
+                <form>
                     <div class="form-group"> 
                         <label for="usernameinput">Username...</label>
                         <input type="text" class="form-control" id="username" #username>
@@ -31,9 +31,11 @@
                         </div>
                 </form>     
                 <br> 
-                <mat-error *ngIf="error">{{error}}</mat-error>          
+                <div class="alert alert-danger" role="alert" *ngIf="error">
+                    {{error}}
+                </div>
                 <div>
-                    <button class="btn btn-primary btn-block" (click) = "login(username.value, password.value)" data-dismiss="modal">Login</button>
+                    <button class="btn btn-primary btn-block" (click)="login(username.value, password.value)">Login</button>
                 </div>
                 <br>
             </div>

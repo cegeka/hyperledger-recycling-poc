@@ -1,101 +1,192 @@
 <app-banner></app-banner>
 
 <div class="container">
-    <!-- Page title jumbotron -->
-    <div class="jumbotron">
-        <h1><i class="fa fa-users"></i> Manage users</h1> 
-        <p>Welcome {{ this.userService.loggedInRole }}!</p>
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createCustomerModal" type="button">
-            Create new user
+  <!-- Page title jumbotron -->
+  <div class="jumbotron">
+    <h1><i class="fa fa-users"></i> Manage users</h1>
+    <p>Welcome {{ this.userService.loggedInRole }}!</p>
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createCustomerModal" type="button">
+      Create new user
+    </button>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+
+      <!-- Transaction alerts -->
+      <div class="alert alert-success alert-dismissible" id="alert-success" role="alert" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
+        <a class="alert-link">You successfully added a new user.</a>
+      </div>
 
-            <!-- Transaction alerts -->
-            <div class="alert alert-success alert-dismissible" id="alert-success1" role="alert" style="display:none;">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>       
-                <a href="#" class="alert-link">You successfully added a new user.</a>
-            </div>
+      <div class="alert alert-success alert-dismissible" id="alert-update" role="alert" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <a class="alert-link">You successfully updated a user.</a>
+      </div>
 
-            <div class="alert alert-success alert-dismissible" id="alert-update1" role="alert" style="display:none;">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>       
-                <a href="#" class="alert-link">You successfully updated a user.</a>
-            </div>
+      <div class="alert alert-success alert-dismissible" id="alert-delete" role="alert" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <a class="alert-link">You successfully deleted a user.</a>
+      </div>
 
-            <div class="alert alert-success alert-dismissible" id="alert-delete1" role="alert" style="display:none;">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>       
-                <a href="#" class="alert-link">You successfully deleted a user.</a>
-            </div>
-
-            <!-- Spinner -->
-            <div class="" style="text-align:center;">
-                <div class="mdl-spin" id="spinner1">
-                    <svg class="spinner" width="35px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                        <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
-                    </svg>
-                </div>  
-            </div>
-
-            <!-- Table -->
-            <table class="table" id="myTable">
-                <tr>
-                    <th><b>User ID</b></th>
-                    <th><b>First name</b></th>
-                    <th><b>Last name</b></th>
-                    <th><b>Actions</b></th>
-                </tr>
-                <tr *ngFor="let customer of customers; let i = index">
-                    <td>{{customer.customerId}}</td>
-                    <td>{{customer.firstName}}</td>
-                    <td>{{customer.lastName}}</td>
-                    <td>
-                        <button class="btn btn-light" (click)="showUpdateCustomerModal()" style="margin-bottom: 5px;">
-                            Update
-                        </button>
-                        <button class="btn btn-danger" (click)="showDeleteCustomerModal()" style="margin-bottom: 5px;">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            </table>
-
-           <!-- Create Customer modal -->
-           <div class="modal fade" id="createCustomerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add user</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="customerId">Customer ID</label>
-                                    <input id="customerId" type="text" class="form-control" #customerId>
-                                </div>
-                                <div class="form-group">
-                                        <label for="password">Password</label>
-                                        <input id="password" type="text" class="form-control" #password>
-                                    </div>
-                                <div class="form-group">
-                                    <label for="firstName">First Name</label>
-                                    <input id="firstName" type="text" class="form-control" #firstName>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastName">Last Name</label>
-                                    <input id="lastName" type="text" class="form-control" #lastName>
-                                </div>
-                            </form>     
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button (click) = "createCustomer(customerId.value, password.value, firstName.value, lastName.value)" type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+      <!-- Spinner -->
+      <div style="text-align:center;">
+        <div class="mdl-spin" id="spinner">
+          <svg class="spinner" width="35px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+            <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+          </svg>
         </div>
+      </div>
+
+      <!-- Table -->
+      <table class="table" id="myTable">
+        <tr>
+          <th><b>User ID</b></th>
+          <th><b>First name</b></th>
+          <th><b>Last name</b></th>
+          <th><b>Actions</b></th>
+        </tr>
+        <tr *ngFor="let customer of customers; let i = index">
+          <td>{{customer.customerId}}</td>
+          <td>{{customer.firstName}}</td>
+          <td>{{customer.lastName}}</td>
+          <td style="margin-bottom: 5px;">
+            <button class="btn btn-light" (click)="copyUserData(customer)" data-toggle="modal" data-target="#updateAccountModal">
+              Update
+            </button>
+            <button class="btn btn-danger" (click)="copyUserData(customer)"data-toggle="modal" data-target="#deleteAccountModal">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Create Customer modal -->
+      <div class="modal fade" id="createCustomerModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add user</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="customerId">Customer ID</label>
+                  <input id="customerId" type="text" class="form-control" #customerId required>
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input id="password" type="password" class="form-control" #password>
+                </div>
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input id="firstName" type="text" class="form-control" #firstName required>
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input id="lastName" type="text" class="form-control" #lastName required>
+                </div>
+                <div class="form-group">
+                  <label for="role">Role</label>
+                  <select class="form-control" id="role" #role required>
+                    <option *ngFor="let role of roles; let i = index;">
+                      {{ApplicationRole[role]}}
+                    </option>
+                  </select>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button (click)="createCustomer(customerId.value, firstName.value, lastName.value, password.value, role.value)"
+                type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Update account -->
+      <div class="modal fade" id="updateAccountModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" (click)="close()">&times;</button>
+              <h4 class="modal-title">Update user</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="customerId_upd">Username</label>
+                  <input id="customerId_upd" type="text" class="form-control" value="{{userCopy.customerId}}" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="firstName_upd">First Name</label>
+                  <input id="firstName_upd" name="firstName" type="text" class="form-control" [(ngModel)]="userCopy.firstName"
+                    required>
+                </div>
+                <div class="form-group">
+                  <label for="lastName_upd">Last Name</label>
+                  <input id="lastName_upd" name="lastName" type="text" class="form-control" [(ngModel)]="userCopy.lastName"
+                    required>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button (click)="updateCustomer(userCopy.customerId, userCopy.firstName, userCopy.lastName, userCopy.password, userCopy.role)"
+                type="button" class="btn btn-primary" data-dismiss="modal">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delete account modal -->
+      <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" (click)="close()">&times;</button>
+              <h4 class="modal-title">Delete user</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <p>Do you really want to delete this user?</p>
+                </div>
+                <div class="form-group">
+                  <label for="customerId_del">Username</label>
+                  <input id="customerId_del" type="text" class="form-control" value="{{userCopy.customerId}}" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="firstName_del">First Name</label>
+                  <input id="firstName_del" name="firstName" type="text" class="form-control" value="{{userCopy.firstName}}" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="lastName_del">Last Name</label>
+                  <input id="lastName_del" name="lastName" type="text" class="form-control" value="{{userCopy.lastName}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="role_del">Role</label>
+                    <input id="role_del" name="role" type="text" class="form-control" value="{{userCopy.role}}" readonly>
+                  </div>  
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button (click)="deleteCustomer(userCopy.customerId)" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </div>
-</div>
+  </div>

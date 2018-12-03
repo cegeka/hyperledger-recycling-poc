@@ -1,7 +1,10 @@
 <app-banner></app-banner>
 <div class="container">
   <div class="jumbotron">
-    <h1><i class="fa fa-exchange-alt"></i> Tx detail</h1> 
+    <h1>
+      <i class="fa fa-exchange-alt"></i>
+      Tx detail
+    </h1> 
     <div *ngFor="let item of json">
       <ng-container *ngIf="item.key=='transactionId'">
         <p class="txid">{{item.value}}</p>
@@ -20,26 +23,76 @@
             <td>{{item.value}}</td>
           </ng-container>
 
-           <ng-container *ngIf="item.key=='tradeable'">
-            <td>Asset</td>
-            <td>{{item.value.split('.')[2]}}</td>
+          <!-- ImportTires -->
+          <ng-container *ngIf="item.key=='tireCount'">
+            <td>Importing tires count</td>
+            <td>{{item.value}}</td>
           </ng-container>
 
-          <ng-container *ngIf="item.key=='sender'">
-            <td>Sender</td>
-            <td>{{item.value}}</td>
+          <ng-container *ngIf="item.key=='importer'">
+            <td>Imported by</td>
+            <td>
+              <strong>{{item.value.split('#')[1]}}</strong>
+            </td>
+          </ng-container>
+          
+          <!-- Sell -->
+          <ng-container *ngIf="item.key=='seller'">
+            <td>Sold by</td>
+            <td>
+              <strong>{{item.value.split('#')[1]}}</strong>
+            </td>
           </ng-container>
 
           <ng-container *ngIf="item.key=='newOwner'">
-            <td>New Owner</td>
-            <td>{{item.value}}</td>
+            <td>Sold to</td>
+            <td>
+              {{item.value.split('#')[1]}}
+            </td>
           </ng-container>
 
+          <ng-container *ngIf="item.key=='tire'">
+            <td>Tire identifier</td>
+            <td>
+              <strong>Tire #{{item.value.split('#')[1]}}</strong>
+            </td>
+          </ng-container>
+          
+          <!-- Sell to end customer -->
+          <ng-container *ngIf="item.key=='vinNumber'">
+            <td>Sold to car with VIN number</td>
+            <td>{{item.value.split('#')[1]}}</td>
+          </ng-container>
+
+          <!-- Recycle -->
+          <ng-container *ngIf="item.key=='recycling'">
+            <td>Recycled by</td>
+            <td>
+              <strong>{{item.value.split('#')[1]}}</strong>
+            </td>
+          </ng-container>
+
+          <ng-container *ngIf="item.key=='vehicle'">
+            <td>Recycled from car with VIN number</td>
+            <td>
+              <strong>{{item.value.split('#')[1]}}</strong>
+            </td>
+          </ng-container>
+
+          <ng-container *ngIf="item.key=='RecycledTiresList'">
+            <td>Recycled Tires</td>
+            <td>
+              <div *ngFor="let tire of item.value">
+                  Tire #{{tire.split('#')[1]}}
+              </div>
+            </td>
+          </ng-container>          
+
+          <!-- Generic stuff -->
           <ng-container *ngIf="item.key=='transactionTimestamp'">
             <td>Timestamp</td>
             <td>{{item.value | date:'dd MMM yyyy, HH:mm:ss'}}</td>
           </ng-container>
-
         </tr>
       </table>
       <button class="btn btn-primary" (click)="goBack()"><i class="fa fa-arrow-left" style="color: #ffffff"></i> Back</button>
