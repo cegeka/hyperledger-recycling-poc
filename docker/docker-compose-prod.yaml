@@ -5,7 +5,7 @@ services:
     build:
       context: ../landing
       args:
-        - MAIN_APP_URL=http://TODO.cloudapp.azure.com:8080
+        - MAIN_APP_URL=http://hyperledger-recycle-poc.westeurope.cloudapp.azure.com:8080
     ports:
       - 80:80
     container_name: hyper-landing
@@ -16,8 +16,8 @@ services:
       args:
         - FRONTEND_ENV=--env=prod
         # variables in environment.prod.ts that point to the public-facing APIs where the website & monitor website will be hosted
-        - PUBLIC_URL=http://TODO.cloudapp.azure.com:8080
-        - MONITOR_PUBLIC_URL=http://TODO.cloudapp.azure.com:8081
+        - PUBLIC_URL=http://hyperledger-recycle-poc.westeurope.cloudapp.azure.com:8080
+        - MONITOR_PUBLIC_URL=http://hyperledger-recycle-poc.westeurope.cloudapp.azure.com:8081
     links:
       - backend
     ports:
