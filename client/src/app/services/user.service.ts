@@ -7,6 +7,7 @@ import { BaseResourceService, HTTP_VERB } from './base-resource.service';
 export class UserService extends BaseResourceService {
   public loggedInUser: any;
   public loggedInUserName: string;
+  public loggedInApplicationRole: string;
   public loggedInRole: UserRole;
 
   public cleanup() {
@@ -67,10 +68,10 @@ export class UserService extends BaseResourceService {
         if (res.password && password != res.password) {
           throw 'Invalid password';
         }
-        
-       
+               
         this.loggedInUser = res;
-        this.loggedInUserName = res.role ? res.role : userRole;
+        this.loggedInUserName = userRole == UserRole.Customer ? res.customerId : res.userId;
+        this.loggedInApplicationRole = res.role;
         this.loggedInRole = userRole;
         return userRole;
       });

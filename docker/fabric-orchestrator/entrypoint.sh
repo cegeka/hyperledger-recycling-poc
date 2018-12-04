@@ -12,7 +12,7 @@ echo "  Local host fabric resource path ${HL_FILES_ROOT_PATH}"
 
 if [ "${FORCE_REBUILD_CHAINCODE_CONTAINER}" == "true" ]; then
   # make sure this is identical to the package name in server/package.json
-  PROJECT_NAME=hyperpoc
+  PROJECT_NAME=recyclepoc
   echo "cleaning up any old containers with name ${PROJECT_NAME}"
   docker ps -a | grep dev-peer0.org1.example.com-${PROJECT_NAME} | awk '{print $1}' | xargs docker rm
   docker images -a | grep dev-peer0.org1.example.com-${PROJECT_NAME} | awk '{print $1}' | xargs docker rmi

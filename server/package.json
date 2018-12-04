@@ -1,5 +1,5 @@
 {
-  "name": "hyperpoc",
+  "name": "recyclepoc",
   "version": "0.0.1",
   "description": "Hyperledger POC quickstart template",
   "scripts": {
@@ -15,8 +15,8 @@
     "start": "composer-rest-server -c admin@$npm_package_name -n required -w true",
     "test": "mocha --recursive"
   },
-  "author": "Cristian Sandu",
-  "email": "cristian.sandu@cegeka.com",
+  "author": "Alexandru Baloc",
+  "email": "alexandru.baloc@cegeka.com",
   "license": "Apache-2.0",
   "devDependencies": {
     "composer-admin": "0.19.4",
