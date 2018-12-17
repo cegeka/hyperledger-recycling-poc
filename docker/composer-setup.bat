@@ -35,11 +35,15 @@ robocopy /E fabric-orchestrator\fabric-tools\fabric-scripts\hlfv11\composer\cryp
 REM only after the above files are copied can we build the containers!
 docker-compose %DOCKER_FILE% build 
 
+REM make sure the docker images are fully downloaded before starting this. The very first time the script is ran it will take whole minutes to run, leading to the network deployment timing out
+docker-compose %DOCKER_FILE% run --entrypoint ./downloadFabric.sh orchestrator
+echo Hyperledger Fabric images up to date
+
 REM create the backend container and run the deploy script only!
 docker-compose %DOCKER_FILE% up -d orchestrator
 
 REM a guess of how long it takes. We can't really make sure the peer servers have started & joined the network
-timeout /t 20 /NOBREAK
+timeout /t 40 /NOBREAK
 
 docker-compose %DOCKER_FILE% up --no-start backend
 docker-compose %DOCKER_FILE% run backend ./deploy.sh
@@ -52,9 +56,9 @@ docker exec -it hyper-backend npm run setup
 
 
 REM initialize the explorer database
-docker-compose %DOCKER_FILE% up -d explorer-db
-docker-compose %DOCKER_FILE% up --no-start explorer
-docker-compose %DOCKER_FILE% run explorer ./initDb.sh
+REM docker-compose %DOCKER_FILE% up -d explorer-db
+REM docker-compose %DOCKER_FILE% up --no-start explorer
+REM docker-compose %DOCKER_FILE% run explorer ./initDb.sh
 
 REM Start everything
 docker-compose %DOCKER_FILE% up -d
